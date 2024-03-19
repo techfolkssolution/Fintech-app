@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.UserInformation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/top_background" />
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="User Information"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="635dp"
+            android:layout_below="@id/txt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:hint="First Name"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:hint="Last Name"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:drawableStart="@drawable/email_vector_effect"
+                    android:drawablePadding="10dp"
+                    android:hint="Email"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Date of Birth"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:drawableStart="@drawable/calendar"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:text="18-03-2024"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Gender"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <RadioButton
+                        android:layout_width="125dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/radio_button_selection"
+                        android:button="@color/transparent"/>
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/male_vector"
+                        android:translationY="-45dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="3dp"/>
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:text="Male"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:translationY="-70dp"
+                        android:layout_marginLeft="50dp"/>
+                    <RadioButton
+                        android:layout_width="125dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/radio_button_selection"
+                        android:button="@color/transparent"
+                        android:translationY="-105dp"
+                        android:layout_marginStart="135dp"/>
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/female_vector"
+                        android:translationY="-145dp"
+                        android:layout_marginLeft="138dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:text="Female"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:translationY="-174dp"
+                        android:layout_marginLeft="170dp"
+                        android:layout_marginTop="4dp"/>
+                </RadioGroup>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:hint="Address"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:hint="District"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/edittext_touch_effect"
+                    android:hint="State"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/lightBlue"
+                    android:textColor="@color/white"
+                    android:text="Submit"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</LinearLayout>
