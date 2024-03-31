@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.lnp.R;
 
 public class Login extends AppCompatActivity {
-    TextView txtSignup;
+    TextView txtSignup,txtForgotPassword;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -19,6 +19,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         txtSignup=findViewById(R.id.txtSignup);
+        txtForgotPassword=findViewById(R.id.txtForgotPassword);
 
         txtSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,9 +27,23 @@ public class Login extends AppCompatActivity {
                 sendToSignupActivity();
             }
         });
+
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendToForgotPasswordActivity();
+            }
+        });
     }
     public void sendToSignupActivity(){
         Intent intent=new Intent(Login.this,SignUp.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    public void sendToForgotPasswordActivity(){
+        Intent intent=new Intent(Login.this,ForgotPassword.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

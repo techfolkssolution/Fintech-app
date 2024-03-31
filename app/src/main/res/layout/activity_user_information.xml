@@ -26,7 +26,6 @@
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"
-
             />
 
         <androidx.cardview.widget.CardView
