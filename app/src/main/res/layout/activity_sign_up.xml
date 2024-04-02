@@ -56,7 +56,7 @@
                     android:textSize="33sp"
                     android:textStyle="bold" />
                 <EditText
-                    android:id="@+id/txtMobileNumber"
+                    android:id="@+id/editTextMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginStart="22dp"
@@ -73,7 +73,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
                 <EditText
-                    android:id="@+id/txtPassword"
+                    android:id="@+id/editTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginStart="22dp"
@@ -89,7 +89,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
                 <EditText
-                    android:id="@+id/txtConfirmPassword"
+                    android:id="@+id/editTextConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginStart="22dp"
