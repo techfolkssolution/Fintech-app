@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity {
         finish();
     }
 
-
     /**
      * Checks if the provided username and password are valid.
      * True if both username and password are non-empty, otherwise false.
@@ -104,4 +103,5 @@ public class Login extends AppCompatActivity {
         return true;
 
     }
+
 }
