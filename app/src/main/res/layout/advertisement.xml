@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
                 android:layout_below="@id/textViewHeading"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="6dp"

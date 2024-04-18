@@ -37,7 +37,7 @@
                 android:drawableStart="@drawable/phone_vector_effect"
                 android:drawablePadding="10dp"
                 android:hint="Phone Number"
-                android:inputType="text"
+                android:inputType="number"
                 android:paddingStart="10dp"
                 android:paddingEnd="8dp"
                 android:maxLength="10"
