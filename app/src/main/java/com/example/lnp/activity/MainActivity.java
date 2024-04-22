@@ -5,13 +5,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.lnp.R;
 import com.example.lnp.fragment.Home;
@@ -57,8 +61,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void displayDialog() {
+        ImageView closeButton;
         Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.advertisement);
+        closeButton=dialog.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 
