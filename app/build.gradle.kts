@@ -42,4 +42,7 @@ dependencies {
 
     //ImageSlider Dependency
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
+    //Circle Imageview Dependency
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }

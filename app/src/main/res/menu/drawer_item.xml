@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navHome"
-        android:title="Home" />
+        android:id="@+id/navContactUs"
+        android:title="Contact Us" />
     <item
-        android:id="@+id/navProfile"
-        android:title="Profile" />
+        android:id="@+id/navLogout"
+        android:title="Logout" />
 </menu>
