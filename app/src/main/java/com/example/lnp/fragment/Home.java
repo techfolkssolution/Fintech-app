@@ -1,6 +1,7 @@
 package com.example.lnp.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,20 +9,24 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
+import com.example.lnp.activity.EditProfile;
 import com.example.lnp.adapter.ServicesAdapter;
 
 import java.util.ArrayList;
 
 
-public class Home extends Fragment {
+public class Home extends Fragment implements OnItemClick{
     private ImageSlider imageSlider;
     private String[] servicesName = {
             "Loans", "CA", "Engineer", "CIBIL", "Savings"
@@ -74,16 +79,21 @@ public class Home extends Fragment {
     }
 
     public void displayAssistanceQueryItem() {
-        queryAdapter = new ServicesAdapter(getActivity(), servicesName, servicesIcon);
+        queryAdapter = new ServicesAdapter(getActivity(), servicesName, servicesIcon,this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewQuery.setLayoutManager(layoutManager);
         recyclerViewQuery.setAdapter(queryAdapter);
     }
 
     public void displayBillsAndUtilityItem() {
-        billAdapter = new ServicesAdapter(getActivity(), billsAndUtilityServiceName, billsAndUtilityServiceIcon);
+        billAdapter = new ServicesAdapter(getActivity(), billsAndUtilityServiceName, billsAndUtilityServiceIcon,this);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
         recyclerViewBills.setLayoutManager(layoutManager);
         recyclerViewBills.setAdapter(billAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(String serviceName) {
+//        Toast.makeText(getActivity(), "Service Name : "+serviceName, Toast.LENGTH_SHORT).show();
     }
 }

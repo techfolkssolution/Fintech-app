@@ -9,19 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
 
 public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ServiceViewHolder> {
     private Context context;
     private String[] servicesName;
     private int[] servicesIcon;
+    private OnItemClick onItemClick;
 
-    public ServicesAdapter(Context context, String[] servicesName, int[] servicesIcon) {
+    public ServicesAdapter(Context context, String[] servicesName, int[] servicesIcon, OnItemClick onItemClick) {
         this.context = context;
         this.servicesName = servicesName;
         this.servicesIcon = servicesIcon;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -35,6 +39,13 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
     public void onBindViewHolder(@NonNull ServiceViewHolder holder, int position) {
         holder.imageViewServiceIcon.setImageResource(servicesIcon[position]);
         holder.textViewServiceName.setText(servicesName[position]);
+
+        holder.cardViewContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onItemClickListener(servicesName[position]);
+            }
+        });
     }
 
     @Override
@@ -46,11 +57,15 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
     public class ServiceViewHolder extends RecyclerView.ViewHolder{
         TextView textViewServiceName;
         ImageView imageViewServiceIcon;
+        CardView cardViewContainer;
+
 
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewServiceName=itemView.findViewById(R.id.txtServiceName);
             imageViewServiceIcon=itemView.findViewById(R.id.imageViewService);
+            cardViewContainer=itemView.findViewById(R.id.cardViewContainer);
+
         }
     }
 }
