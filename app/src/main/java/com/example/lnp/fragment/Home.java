@@ -21,6 +21,7 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
 import com.example.lnp.activity.EditProfile;
+import com.example.lnp.activity.RequestService;
 import com.example.lnp.adapter.ServicesAdapter;
 
 import java.util.ArrayList;
@@ -94,6 +95,9 @@ public class Home extends Fragment implements OnItemClick{
 
     @Override
     public void onItemClickListener(String serviceName) {
+        Intent i=new Intent(getActivity(), RequestService.class);
+        i.putExtra("serviceName",serviceName);
+        startActivity(i);
 //        Toast.makeText(getActivity(), "Service Name : "+serviceName, Toast.LENGTH_SHORT).show();
     }
 }
