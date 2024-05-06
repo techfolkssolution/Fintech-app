@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bottomHome"
-        android:title="Home" />
+        android:title="Home"
+        android:icon="@drawable/home_vector"/>
     <item
         android:id="@+id/bottomWallet"
-        android:title="Wallet" />
+        android:title="Wallet"
+        android:icon="@drawable/wallet_vector"/>
     <item
         android:id="@+id/bottomLedger"
-        android:title="Ledger" />
+        android:title="Ledger"
+        android:icon="@drawable/ledger"/>
     <item
         android:id="@+id/bottomProfile"
-        android:title="Profile" />
-    <item
-        android:id="@+id/bottomContactUs"
-        android:title="Contact Us" />
+        android:title="Profile"
+        android:icon="@drawable/profile_vector"/>
 </menu>

@@ -18,14 +18,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lnp.R;
+import com.example.lnp.fragment.ContactUs;
 import com.example.lnp.fragment.Home;
+import com.example.lnp.fragment.Ledger;
 import com.example.lnp.fragment.Profile;
+import com.example.lnp.fragment.Wallet;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    BottomNavigationView bottomNavigation;
 
 
     @SuppressLint("MissingInflatedId")
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
 
 
         setSupportActionBar(toolbar);
@@ -53,9 +60,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Home()).commit();
-            navigationView.setCheckedItem(R.id.navHome);
         }
 
+
+        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.bottomProfile) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Profile()).commit();
+                    return true;
+                } else if (itemId == R.id.bottomHome) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Home()).commit();
+                    return true;
+                } else if (itemId == R.id.bottomLedger) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Ledger()).commit();
+                    return true;
+                } else if (itemId == R.id.bottomWallet) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Wallet()).commit();
+                    return true;
+                }
+                return false;
+            }
+        });
         displayDialog();
     }
 
@@ -64,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView closeButton;
         Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.advertisement);
-        closeButton=dialog.findViewById(R.id.closeButton);
+        closeButton = dialog.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,10 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.navHome) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Home()).commit();
-        } else if (itemId == R.id.navProfile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Profile()).commit();
+        if (itemId == R.id.navContactUs) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ContactUs()).commit();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
