@@ -45,4 +45,7 @@ dependencies {
 
     //Circle Imageview Dependency
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+
+    implementation("com.android.volley:volley:1.2.1")
 }

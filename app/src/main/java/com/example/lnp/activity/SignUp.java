@@ -6,17 +6,28 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.lnp.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SignUp extends AppCompatActivity {
     TextView txtLogin;
     AppCompatButton btnSignup;
     EditText editTextMobileNumber, editTextPassword, editTextConfirmPassword;
+    private static String url="http://localhost:8080/rest/auth/signup";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,6 +56,9 @@ public class SignUp extends AppCompatActivity {
                         editTextPassword.getText().toString().trim(),
                         editTextConfirmPassword.getText().toString().trim()
                 )) {
+//                    addUser(url,
+//                            editTextMobileNumber.getText().toString().trim(),
+//                            editTextConfirmPassword.getText().toString().trim());
                     sendToUserInfoActivity();
                 }
             }
@@ -101,5 +115,28 @@ public class SignUp extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public void addUser(String url,String userMobileNumber,String userPassword){
+        RequestQueue requestQueue= Volley.newRequestQueue(SignUp.this);
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("phone_number", userMobileNumber);
+            jsonObject.put("password", userPassword);
+        }catch (Exception e){
+
+        }
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(SignUp.this, "Response : "+response.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error","error : "+error.toString());
+            }
+        });
+        requestQueue.add(request);
     }
 }
