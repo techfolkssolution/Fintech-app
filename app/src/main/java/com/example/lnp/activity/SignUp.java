@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.lnp.API.API;
 import com.example.lnp.R;
 
 import org.json.JSONException;
@@ -27,7 +29,7 @@ public class SignUp extends AppCompatActivity {
     TextView txtLogin;
     AppCompatButton btnSignup;
     EditText editTextMobileNumber, editTextPassword, editTextConfirmPassword;
-    private static String url="http://localhost:8080/rest/auth/signup";
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -42,6 +44,8 @@ public class SignUp extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
 
+        sharedPreferences=getSharedPreferences("userInformation",MODE_PRIVATE);
+
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,15 +55,11 @@ public class SignUp extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isValidInput(
-                        editTextMobileNumber.getText().toString().trim(),
-                        editTextPassword.getText().toString().trim(),
-                        editTextConfirmPassword.getText().toString().trim()
-                )) {
-//                    addUser(url,
-//                            editTextMobileNumber.getText().toString().trim(),
-//                            editTextConfirmPassword.getText().toString().trim());
-                    sendToUserInfoActivity();
+                String mobileNumber = editTextMobileNumber.getText().toString().trim();
+                String password = editTextPassword.getText().toString().trim();
+                String confirmPassword = editTextConfirmPassword.getText().toString().trim();
+                if (isValidInput(mobileNumber, password, confirmPassword)) {
+                    signupUser(mobileNumber, confirmPassword);
                 }
             }
         });
@@ -89,21 +89,21 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this, "Please Fill All The Details", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(mobileNumber.isEmpty()){
+        if (mobileNumber.isEmpty()) {
             editTextMobileNumber.requestFocus();
             editTextMobileNumber.setError("Enter Mobile Number");
             return false;
-        } else if (mobileNumber.length()!=10) {
+        } else if (mobileNumber.length() != 10) {
             editTextMobileNumber.requestFocus();
             editTextMobileNumber.setError("Mobile Number must be 10 digits");
             return false;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.requestFocus();
             editTextPassword.setError("Enter Password");
             return false;
         }
-        if(confirmPassword.isEmpty()){
+        if (confirmPassword.isEmpty()) {
             editTextConfirmPassword.requestFocus();
             editTextConfirmPassword.setError("Enter Confirm Password");
             return false;
@@ -117,24 +117,27 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    public void addUser(String url,String userMobileNumber,String userPassword){
-        RequestQueue requestQueue= Volley.newRequestQueue(SignUp.this);
-        JSONObject jsonObject=new JSONObject();
+    public void signupUser(String userMobileNumber, String userPassword) {
+        RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("phone_number", userMobileNumber);
+            jsonObject.put("phoneNumber", userMobileNumber);
             jsonObject.put("password", userPassword);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, API.SIGNUP_API, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(SignUp.this, "Response : "+response.toString(), Toast.LENGTH_SHORT).show();
+                sendToUserInfoActivity();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("error","error : "+error.toString());
+                if (error.networkResponse != null && error.networkResponse.statusCode == 400) {
+                    editTextMobileNumber.requestFocus();
+                    editTextMobileNumber.setError("This Phone Number Already Exists");
+                }
             }
         });
         requestQueue.add(request);

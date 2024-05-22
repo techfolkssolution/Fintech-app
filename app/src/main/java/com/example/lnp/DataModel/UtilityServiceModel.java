@@ -3,8 +3,17 @@ package com.example.lnp.DataModel;
 public class UtilityServiceModel {
     private String name,address,comment,loanCategory,loanType,CAType,engineerBuildingType,engineerServiceType,tenure;
     private long mobileNumber,loanAmount,savingAmount;
+    private int id;
 
     public UtilityServiceModel() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

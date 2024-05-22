@@ -200,34 +200,5 @@ public class RequestService extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    public void displayRecords() {
-        // Initialize Volley RequestQueue
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API.READ_UTILITY_SERVICE_DATA_API, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject record = response.getJSONObject(i);
-                        String id = record.getString("id");
-                        String name = record.getString("name");
-                        Log.d("checking api", "ID " + id + "\nName " + name + "\n");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("checking api", e.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("checking api", error.toString());
-            }
-        });
-
-        // Add the request to the RequestQueue
-        queue.add(jsonArrayRequest);
-    }
 }

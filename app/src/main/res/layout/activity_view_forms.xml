@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ViewForms">
+    <!-- Horizontal layout for components -->
+    <!-- Horizontal layout for components -->
+    <LinearLayout
+        android:id="@+id/layoutContainer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- First TextView -->
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ascending"
+            android:textColor="@color/black"
+            android:paddingStart="3dp"
+            android:textSize="18sp"/>
+
+        <!-- Second TextView -->
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:paddingStart="3dp"
+            android:textColor="@color/black"
+            android:text="Descending"
+            android:textSize="18sp"/>
+
+        <!-- Spinner -->
+        <!-- TextInputLayout for Loan Type -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutLoanType"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="120dp"
+            android:paddingStart="3dp"
+            android:layout_height="wrap_content"
+            android:hint="Page No"
+            android:visibility="visible"
+            app:boxStrokeColor="#00BDE8">
+
+            <AutoCompleteTextView
+                android:id="@+id/loanType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:backgroundTint="@color/lightBlue"
+            android:text="Next"/>
+    </LinearLayout>
+
+
+    <!-- Other content of your activity -->
+
+    <!-- Other content of your activity -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/layoutContainer1"
+        android:id="@+id/recyclerViewForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -5,18 +5,32 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpResponse;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.lnp.API.API;
 import com.example.lnp.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
     private TextView txtSignup, txtForgotPassword;
     private EditText editTextUserName, editTextPassword;
     private AppCompatButton btnLogin, btnGoggle;
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,6 +45,8 @@ public class Login extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnGoggle = findViewById(R.id.btnGoogle);
+
+        sharedPreferences=getSharedPreferences("userInformation",MODE_PRIVATE);
 
 
         txtSignup.setOnClickListener(new View.OnClickListener() {
@@ -50,15 +66,51 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isValidInput(
-                        editTextUserName.getText().toString().trim(),
-                        editTextPassword.getText().toString().trim()
-                )) {
-                    sendToMainActivity();
+                String userName = editTextUserName.getText().toString().trim();
+                String userPassword = editTextPassword.getText().toString().trim();
+                if (isValidInput(userName, userPassword)) {
+                    loginUser(userName, userPassword);
+                }
+            }
+
+
+        });
+    }
+
+    /**
+     * Initiates a login request with the provided phone number and password.
+     *
+     * @param userMobileNumber The phone number entered by the user.
+     * @param userPassword     The password entered by the user.
+     */
+
+    private void loginUser(String userMobileNumber, String userPassword) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phoneNumber", userMobileNumber);
+            jsonObject.put("password", userPassword);
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API.LOGIN_API, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                sharedPreferences.edit().putBoolean("isLoggedIn",true).apply();
+                sendToMainActivity();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                    Toast.makeText(Login.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        requestQueue.add(jsonObjectRequest);
     }
+
 
     public void sendToSignupActivity() {
         Intent intent = new Intent(Login.this, SignUp.class);

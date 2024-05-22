@@ -22,6 +22,7 @@ import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
 import com.example.lnp.activity.EditProfile;
 import com.example.lnp.activity.RequestService;
+import com.example.lnp.activity.ViewForms;
 import com.example.lnp.adapter.ServicesAdapter;
 
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ import java.util.ArrayList;
 public class Home extends Fragment implements OnItemClick{
     private ImageSlider imageSlider;
     private String[] servicesName = {
-            "Loans", "CA", "Engineer", "CIBIL", "Savings"
+            "Loans", "CA", "Engineer", "CIBIL", "Savings","View Forms","Admin"
     };
     private int[] servicesIcon = {
-            R.drawable.bank, R.drawable.accountant, R.drawable.engineers, R.drawable.cibil, R.drawable.piggybank
+            R.drawable.bank, R.drawable.accountant, R.drawable.engineers, R.drawable.cibil, R.drawable.piggybank,R.drawable.form,R.drawable.admin
     };
 
     private String[] billsAndUtilityServiceName = {
@@ -95,9 +96,17 @@ public class Home extends Fragment implements OnItemClick{
 
     @Override
     public void onItemClickListener(String serviceName) {
-        Intent i=new Intent(getActivity(), RequestService.class);
-        i.putExtra("serviceName",serviceName);
-        startActivity(i);
+        if(serviceName.equals("View Forms")){
+            Intent intent=new Intent(getActivity(), ViewForms.class);
+            intent.putExtra("serviceName",serviceName);
+            startActivity(intent);
+        }else{
+            Intent i=new Intent(getActivity(), RequestService.class);
+            i.putExtra("serviceName",serviceName);
+            startActivity(i);
+        }
+
+
 //        Toast.makeText(getActivity(), "Service Name : "+serviceName, Toast.LENGTH_SHORT).show();
     }
 }
