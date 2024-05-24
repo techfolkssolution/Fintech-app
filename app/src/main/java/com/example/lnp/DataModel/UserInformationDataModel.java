@@ -1,9 +1,26 @@
 package com.example.lnp.DataModel;
 
-public class UserInformation {
-    private String firstName,lastName,email,MobileNumber,address1,address2,address3;
+public class UserInformationDataModel {
+    private String firstName,lastName,email,MobileNumber,address1,address2,address3,dateOfBirth,gender;
 
-    public UserInformation(){}
+    public UserInformationDataModel(){}
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public String getFirstName() {
         return firstName;

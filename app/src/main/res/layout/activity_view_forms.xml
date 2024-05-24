@@ -37,7 +37,7 @@
         <!-- Spinner -->
         <!-- TextInputLayout for Loan Type -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutLoanType"
+            android:id="@+id/layoutNumberOfPage"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="120dp"
             android:paddingStart="3dp"
@@ -47,7 +47,7 @@
             app:boxStrokeColor="#00BDE8">
 
             <AutoCompleteTextView
-                android:id="@+id/loanType"
+                android:id="@+id/spinnerPageNumber"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="none" />

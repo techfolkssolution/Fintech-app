@@ -98,6 +98,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 sharedPreferences.edit().putBoolean("isLoggedIn",true).apply();
+                sharedPreferences.edit().putString("mobileNumber",userMobileNumber).apply();
                 sendToMainActivity();
             }
         }, new Response.ErrorListener() {

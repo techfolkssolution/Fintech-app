@@ -6,5 +6,6 @@ import java.util.ArrayList;
 
 public interface ServiceRecordsCallback {
     void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList);
+    void pageCounter(int pageNumber);
     void onError(String error);
 }

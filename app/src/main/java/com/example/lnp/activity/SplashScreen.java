@@ -21,9 +21,11 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(sharedPreferences.getBoolean("isLoggedIn",false)) {
+                if(sharedPreferences.getBoolean("isLoggedIn",false))  {
                     sendToMainActivity();
-                }else{
+                } else if (!sharedPreferences.getBoolean("userInfo",true)) {
+                    sendToUserInformationActivity();
+                } else{
                     sendToLoginActivity();
                 }
             }

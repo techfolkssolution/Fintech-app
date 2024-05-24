@@ -42,6 +42,7 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/editTextFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -55,6 +56,7 @@
                     android:textSize="18sp" />
 
                 <EditText
+                    android:id="@+id/editTextLastName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -68,6 +70,7 @@
                     android:textSize="18sp" />
 
                 <EditText
+                    android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -119,12 +122,14 @@
                     android:textSize="18sp" />
 
                 <RadioGroup
+                    android:id="@+id/radioGroupGender"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
 
                     <RadioButton
+                        android:id="@+id/radioButtonMale"
                         android:layout_width="125dp"
                         android:layout_height="50dp"
                         android:background="@drawable/radio_button_selection"
@@ -146,6 +151,7 @@
                         android:translationY="-70dp"
                         android:layout_marginLeft="50dp"/>
                     <RadioButton
+                        android:id="@+id/radioButtonFemale"
                         android:layout_width="125dp"
                         android:layout_height="50dp"
                         android:background="@drawable/radio_button_selection"
@@ -171,6 +177,7 @@
                 </RadioGroup>
 
                 <EditText
+                    android:id="@+id/editTextAddress"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -183,6 +190,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
                 <EditText
+                    android:id="@+id/editTextDistrict"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -195,6 +203,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
                 <EditText
+                    android:id="@+id/editTextState"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
@@ -208,6 +217,7 @@
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSubmit"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

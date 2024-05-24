@@ -1,6 +1,8 @@
 package com.example.lnp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -32,7 +34,7 @@ public class Profile extends Fragment {
     AppCompatButton btnWallet, btnEditProfile;
     FragmentManager fragmentManager;
     TextView textViewUserId, textViewName, textViewDesignation, textViewEmail, textViewMobileNumber, textViewAddress1, textViewAddress2, textViewAddress3;
-
+    private SharedPreferences sharedPreferences;
 
     public Profile() {
         // Required empty public constructor
@@ -58,10 +60,12 @@ public class Profile extends Fragment {
 
         // Get the FragmentManager
         fragmentManager = getParentFragmentManager();
-
+        sharedPreferences= requireContext().getSharedPreferences("userInformation", Context.MODE_PRIVATE);
+        String mobileNumber=sharedPreferences.getString("mobileNumber",null);
+        Log.d("errorAPI","mobileNumber : "+mobileNumber);
 
         //This Method Will Display User Details In Textview.
-        displayUserDetails("8780260413");
+        displayUserDetails(mobileNumber);
 
         btnWallet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,13 +110,13 @@ public class Profile extends Fragment {
                             textViewAddress1.setText(userDetailsObj.getString("address"));
 
                         }catch (JSONException jsonException){
-
+                            Log.d("errorAPI","Json : "+jsonException.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("errorAPI","error : "+error.getMessage());
             }
         }
         );
@@ -120,30 +124,4 @@ public class Profile extends Fragment {
 
     }
 
-    public void readDataFromAPI() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                API.READ_USER_DETAILS_API + "8780260413",
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject userDetailsObj = response.getJSONObject("userDetails");
-                            Log.d("API Checking", "User Id : " + response.getInt("userId") +
-                                    "User Name : " + userDetailsObj.getString("firstName"));
-
-                        } catch (JSONException exception) {
-
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("API Checking", "error : " + error.toString());
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
 }

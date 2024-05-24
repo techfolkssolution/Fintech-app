@@ -19,4 +19,7 @@ public class API {
     public static final String READ_USER_DETAILS_API ="http://192.168.1.3:8080/rest/user/get/";
     //This API is Used To Update The User Information
     public static final String UPDATE_USER_INFORMATION_API="http://192.168.1.3:8080/rest/user/update";
+
+    //This API is used to Save UserInformation
+    public static  final  String SAVE_USER_INFORMATION_API="http://192.168.1.3:8080/rest/user/userdetails";
 }

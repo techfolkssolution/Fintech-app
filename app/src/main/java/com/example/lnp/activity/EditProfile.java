@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,16 +20,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.lnp.API.API;
-import com.example.lnp.DataModel.UserInformation;
+import com.example.lnp.DataModel.UserInformationDataModel;
 import com.example.lnp.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EditProfile extends AppCompatActivity {
     EditText editTextName,editTextMobileNumber,editTextAddress1,editTextAddress2,editTextAddress3,editTextEmail;
     AppCompatButton btnSubmit;
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,23 +46,26 @@ public class EditProfile extends AppCompatActivity {
         editTextAddress3=findViewById(R.id.editTextAddress03);
         btnSubmit =findViewById(R.id.btnSubmit);
 
-        displayUserDetails("8780260413");
+        sharedPreferences=getSharedPreferences("userInformation",MODE_PRIVATE);
+        String mobileNumber=sharedPreferences.getString("mobileNumber",null);
+
+        displayUserDetails(mobileNumber);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserInformation userInformation=new UserInformation();
+                UserInformationDataModel userInformationDataModel =new UserInformationDataModel();
                 String fullName=editTextName.getText().toString().trim();
                 String mobileNumber=editTextMobileNumber.getText().toString().trim();
                 String address=editTextAddress1.getText().toString().trim();
                 String email=editTextEmail.getText().toString().trim();
                 String[] name=fullName.split(" ");
-                userInformation.setFirstName(name[0]);
-                userInformation.setLastName(name[1]);
-                userInformation.setMobileNumber(mobileNumber);
-                userInformation.setEmail(email);
-                userInformation.setAddress1(address);
-                fetchData("8780260413",userInformation);
+                userInformationDataModel.setFirstName(name[0]);
+                userInformationDataModel.setLastName(name[1]);
+                userInformationDataModel.setMobileNumber(mobileNumber);
+                userInformationDataModel.setEmail(email);
+                userInformationDataModel.setAddress1(address);
+                fetchData("8780260413", userInformationDataModel);
             }
         });
 
@@ -96,7 +100,7 @@ public class EditProfile extends AppCompatActivity {
 
     }
 
-    public void fetchData(String mobileNumber,UserInformation userInformation){
+    public void fetchData(String mobileNumber, UserInformationDataModel userInformationDataModel){
         RequestQueue requestQueue = Volley.newRequestQueue(EditProfile.this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -109,16 +113,16 @@ public class EditProfile extends AppCompatActivity {
                             JSONObject userDetails = response.getJSONObject("userDetails");
 
                             // Modify the userDetails
-                            userDetails.put("firstName", userInformation.getFirstName());
-                            userDetails.put("lastName", userInformation.getLastName());
-                            userDetails.put("email", userInformation.getEmail());
-                            userDetails.put("address", userInformation.getAddress1());
+                            userDetails.put("firstName", userInformationDataModel.getFirstName());
+                            userDetails.put("lastName", userInformationDataModel.getLastName());
+                            userDetails.put("email", userInformationDataModel.getEmail());
+                            userDetails.put("address", userInformationDataModel.getAddress1());
 
 
                             // Create the new body for PUT request
                             JSONObject updatedDetails = new JSONObject();
                             updatedDetails.put("userId", response.getInt("userId"));
-                            updatedDetails.put("phoneNumber", userInformation.getMobileNumber());
+                            updatedDetails.put("phoneNumber", userInformationDataModel.getMobileNumber());
                             updatedDetails.put("password", response.getString("password"));
                             updatedDetails.put("userRole", response.optString("userRole", null));
                             updatedDetails.put("userDetails", userDetails);

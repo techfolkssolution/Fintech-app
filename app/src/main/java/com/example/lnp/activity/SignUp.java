@@ -65,6 +65,44 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+
+    public void signupUser(String userMobileNumber, String userPassword) {
+        RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phoneNumber", userMobileNumber);
+            jsonObject.put("password", userPassword);
+        } catch (Exception e) {
+
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, API.SIGNUP_API, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("signup","response : "+response.toString());
+                try {
+                    sharedPreferences.edit().putInt("userId",response.getInt("userId")).apply();
+                    sharedPreferences.edit().putBoolean("userInfo",false).apply();
+                    sharedPreferences.edit().putString("mobileNumber",userMobileNumber).apply();
+                    sendToUserInformationActivity();
+                } catch (JSONException e) {
+
+                }
+
+                Log.d("signup","Done");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.statusCode == 400) {
+                    editTextMobileNumber.requestFocus();
+                    editTextMobileNumber.setError("This Phone Number Already Exists");
+                }
+            }
+        });
+        requestQueue.add(request);
+    }
+
     public void sendToLoginActivity() {
         Intent intent = new Intent(SignUp.this, Login.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -72,9 +110,8 @@ public class SignUp extends AppCompatActivity {
         finish();
     }
 
-    public void sendToUserInfoActivity() {
-        Intent intent = new Intent(SignUp.this, UserInformation.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    public void sendToUserInformationActivity(){
+        Intent intent=new Intent(SignUp.this, UserInformation.class);
         startActivity(intent);
         finish();
     }
@@ -117,29 +154,5 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    public void signupUser(String userMobileNumber, String userPassword) {
-        RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("phoneNumber", userMobileNumber);
-            jsonObject.put("password", userPassword);
-        } catch (Exception e) {
 
-        }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, API.SIGNUP_API, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                sendToUserInfoActivity();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse != null && error.networkResponse.statusCode == 400) {
-                    editTextMobileNumber.requestFocus();
-                    editTextMobileNumber.setError("This Phone Number Already Exists");
-                }
-            }
-        });
-        requestQueue.add(request);
-    }
 }
