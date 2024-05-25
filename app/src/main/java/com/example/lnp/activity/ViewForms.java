@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class ViewForms extends AppCompatActivity {
     RecyclerView recyclerViewForm;
     AppCompatButton btnNext;
-    AutoCompleteTextView spinnerPageNumber;
+    AutoCompleteTextView spinnerPageNumber,spinnerSort;
     int pageCounter = 0;
     int totalPage = 0;
 
@@ -50,6 +50,13 @@ public class ViewForms extends AppCompatActivity {
         recyclerViewForm = findViewById(R.id.recyclerViewForm);
         btnNext = findViewById(R.id.btnNext);
         spinnerPageNumber = findViewById(R.id.spinnerPageNumber);
+        spinnerSort=findViewById(R.id.spinnerSort);
+
+        String[] sorting={
+               "Ascending","Descending"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, sorting);
+        spinnerSort.setAdapter(adapter);
 
 
         getServiceRecords(new ServiceRecordsCallback() {
@@ -68,6 +75,7 @@ public class ViewForms extends AppCompatActivity {
 
             @Override
             public void pageCounter(int pageNumber) {
+                totalPage=pageNumber;
                 setUpPageNumberSpinner(pageNumber);
             }
         }, "0");
@@ -103,27 +111,27 @@ public class ViewForms extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pageCounter++;
-                getServiceRecords(new ServiceRecordsCallback() {
-                    @Override
-                    public void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList) {
-                        FormAdapter formAdapter = new FormAdapter(ViewForms.this, utilityServiceModelArrayList);
-                        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                        recyclerViewForm.setLayoutManager(manager);
-                        recyclerViewForm.setAdapter(formAdapter);
-                    }
+                    pageCounter++;
+                    getServiceRecords(new ServiceRecordsCallback() {
+                        @Override
+                        public void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList) {
+                            FormAdapter formAdapter = new FormAdapter(ViewForms.this, utilityServiceModelArrayList);
+                            LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                            recyclerViewForm.setLayoutManager(manager);
+                            recyclerViewForm.setAdapter(formAdapter);
+                        }
 
-                    @Override
-                    public void onError(String error) {
+                        @Override
+                        public void onError(String error) {
 
-                    }
+                        }
 
-                    @Override
-                    public void pageCounter(int pageNumber) {
+                        @Override
+                        public void pageCounter(int pageNumber) {
 
-                    }
-                }, String.valueOf(pageCounter));
-            }
+                        }
+                    }, String.valueOf(pageCounter));
+                }
         });
 
 
@@ -145,7 +153,7 @@ public class ViewForms extends AppCompatActivity {
         ArrayList<UtilityServiceModel> utilityServiceModelArrayList = new ArrayList<>();
         // Initialize Volley RequestQueue
         RequestQueue queue = Volley.newRequestQueue(this);
-        String apiUrl = "http://192.168.1.3:8080/rest/service/get/" + pageNumber + "/1/id";
+        String apiUrl = "http://192.168.1.3:8080/rest/service/get/" + pageNumber + "/10/id";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, apiUrl, null, new Response.Listener<JSONObject>() {
             @Override
@@ -169,6 +177,7 @@ public class ViewForms extends AppCompatActivity {
                         utilityServiceModel.setTenure(record.getString("tenure"));
                         utilityServiceModel.setSavingAmount(record.getLong("savingAmount"));
                         utilityServiceModel.setComment(record.getString("comments"));
+                        utilityServiceModel.setFormType(record.getString("formType"));
                         utilityServiceModelArrayList.add(utilityServiceModel);
                     }
                     callback.onSuccess(utilityServiceModelArrayList);

@@ -1,7 +1,7 @@
 package com.example.lnp.DataModel;
 
 public class UserInformationDataModel {
-    private String firstName,lastName,email,MobileNumber,address1,address2,address3,dateOfBirth,gender;
+    private String firstName,lastName,email,MobileNumber,address1, state, district,dateOfBirth,gender;
 
     public UserInformationDataModel(){}
 
@@ -62,19 +62,19 @@ public class UserInformationDataModel {
         this.address1 = address1;
     }
 
-    public String getAddress2() {
-        return address2;
+    public String getState() {
+        return state;
     }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getAddress3() {
-        return address3;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setAddress3(String address3) {
-        this.address3 = address3;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 }

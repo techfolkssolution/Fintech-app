@@ -132,14 +132,20 @@ public class RequestService extends AppCompatActivity {
                     utilityServiceModel.setLoanCategory(spinnerLoanCategory.getText().toString().trim());
                     utilityServiceModel.setLoanType(spinnerLoanType.getText().toString());
                     utilityServiceModel.setLoanAmount(Long.parseLong(editTextLoanAmount.getText().toString().trim()));
+                    utilityServiceModel.setFormType("Loans");
                 } else if (serviceName.equals("CA")) {
                     utilityServiceModel.setCAType(spinnerCAType.getText().toString().trim());
+                    utilityServiceModel.setFormType("CA");
                 } else if (serviceName.equals("Engineer")) {
                     utilityServiceModel.setEngineerBuildingType(spinnerEngineerBuildingType.getText().toString().trim());
                     utilityServiceModel.setEngineerServiceType(spinnerEngineerServiceType.getText().toString().trim());
+                    utilityServiceModel.setFormType("Engineer");
                 } else if (serviceName.equals("Savings")) {
                     utilityServiceModel.setTenure(spinnerTenure.getText().toString().trim());
                     utilityServiceModel.setSavingAmount(Long.parseLong(editTextSavingAmount.getText().toString().trim()));
+                    utilityServiceModel.setFormType("Savings");
+                } else if (serviceName.equals("CIBIL")) {
+                    utilityServiceModel.setFormType("CIBIL");
                 }
                 saveData(utilityServiceModel);
             }
@@ -181,6 +187,7 @@ public class RequestService extends AppCompatActivity {
             jsonObject.put("engineerServiceType",utilityServiceModel.getEngineerServiceType());
             jsonObject.put("tenure",utilityServiceModel.getTenure());
             jsonObject.put("savingAmount",utilityServiceModel.getSavingAmount());
+            jsonObject.put("formType",utilityServiceModel.getFormType());
 
         } catch (JSONException e) {
 

@@ -1,7 +1,7 @@
 package com.example.lnp.DataModel;
 
 public class UtilityServiceModel {
-    private String name,address,comment,loanCategory,loanType,CAType,engineerBuildingType,engineerServiceType,tenure;
+    private String name,address,comment,loanCategory,loanType,CAType,engineerBuildingType,engineerServiceType,tenure,formType;
     private long mobileNumber,loanAmount,savingAmount;
     private int id;
 
@@ -10,6 +10,14 @@ public class UtilityServiceModel {
 
     public int getId() {
         return id;
+    }
+
+    public String getFormType() {
+        return formType;
+    }
+
+    public void setFormType(String formType) {
+        this.formType = formType;
     }
 
     public void setId(int id) {

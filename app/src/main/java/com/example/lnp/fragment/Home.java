@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
@@ -22,6 +23,7 @@ import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
 import com.example.lnp.activity.EditProfile;
 import com.example.lnp.activity.RequestService;
+import com.example.lnp.activity.RetailerDocumentVerification;
 import com.example.lnp.activity.ViewForms;
 import com.example.lnp.adapter.ServicesAdapter;
 
@@ -49,6 +51,7 @@ public class Home extends Fragment implements OnItemClick{
     };
     private RecyclerView recyclerViewQuery, recyclerViewBills;
     private ServicesAdapter queryAdapter, billAdapter;
+    private TextView textViewRetailer;
 
     public Home() {
         // Required empty public constructor
@@ -64,6 +67,7 @@ public class Home extends Fragment implements OnItemClick{
         imageSlider = view.findViewById(R.id.imageSlider);
         recyclerViewQuery = view.findViewById(R.id.recyclerViewServices);
         recyclerViewBills = view.findViewById(R.id.recyclerViewBills);
+        textViewRetailer=view.findViewById(R.id.textViewRetailer);
 
 
         //Display Images in slider.
@@ -75,6 +79,14 @@ public class Home extends Fragment implements OnItemClick{
 
         displayAssistanceQueryItem();
         displayBillsAndUtilityItem();
+        textViewRetailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getActivity(), RetailerDocumentVerification.class);
+                startActivity(i);
+
+            }
+        });
 
 
         return view;
@@ -96,17 +108,29 @@ public class Home extends Fragment implements OnItemClick{
 
     @Override
     public void onItemClickListener(String serviceName) {
+        boolean isRetailer=false;
         if(serviceName.equals("View Forms")){
             Intent intent=new Intent(getActivity(), ViewForms.class);
             intent.putExtra("serviceName",serviceName);
             startActivity(intent);
         }else{
-            Intent i=new Intent(getActivity(), RequestService.class);
-            i.putExtra("serviceName",serviceName);
-            startActivity(i);
+            if (isRetailer || isServiceAccessibleByAll(serviceName)) {
+                Intent i = new Intent(getActivity(), RequestService.class);
+                i.putExtra("serviceName", serviceName);
+                startActivity(i);
+            } else {
+                Toast.makeText(getActivity(), "This service is only available to retailers.", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
 //        Toast.makeText(getActivity(), "Service Name : "+serviceName, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private boolean isServiceAccessibleByAll(String serviceName) {
+        // Define which services are accessible by all users
+        return serviceName.equals("Loans") || serviceName.equals("CA") || serviceName.equals("Engineer")
+                || serviceName.equals("CIBIL") || serviceName.equals("Savings");
     }
 }

@@ -101,13 +101,17 @@ public class Profile extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try{
+
                             JSONObject userDetailsObj = response.getJSONObject("userDetails");
+                            String[] address=userDetailsObj.getString("address").split("#");
                             textViewUserId.setText(String.valueOf(response.getInt("userId")));
                             textViewName.setText(userDetailsObj.getString("firstName")+" "+userDetailsObj.getString("lastName"));
                             textViewDesignation.setText(userDetailsObj.getString("designation"));
                             textViewEmail.setText(userDetailsObj.getString("email"));
                             textViewMobileNumber.setText(response.getString("phoneNumber"));
-                            textViewAddress1.setText(userDetailsObj.getString("address"));
+                            textViewAddress1.setText(address[0]);
+                            textViewAddress2.setText(address[1]);
+                            textViewAddress3.setText(address[2]);
 
                         }catch (JSONException jsonException){
                             Log.d("errorAPI","Json : "+jsonException.getMessage());

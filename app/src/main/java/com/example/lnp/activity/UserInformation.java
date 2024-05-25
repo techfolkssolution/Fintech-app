@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,9 @@ import com.example.lnp.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class UserInformation extends AppCompatActivity {
@@ -62,6 +63,9 @@ public class UserInformation extends AppCompatActivity {
 
         sharedPreferences=getSharedPreferences("userInformation",MODE_PRIVATE);
 
+        // Set the current date in the TextView
+        setCurrentDateInTextView();
+
 
         txtDateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +96,28 @@ public class UserInformation extends AppCompatActivity {
                 userInformationDataModel.setDateOfBirth(dateOfBirth);
                 userInformationDataModel.setGender(gender);
                 userInformationDataModel.setAddress1(address);
-                userInformationDataModel.setAddress2(district);
-                userInformationDataModel.setAddress3(state);
+                userInformationDataModel.setState(state);
+                userInformationDataModel.setDistrict(district);
                 int userId=sharedPreferences.getInt("userId",0);
                 Log.d("userId","User Id  "+userId);
                 saveUserInformation(userId, userInformationDataModel);
             }
         });
 
+    }
+
+    public void setCurrentDateInTextView() {
+        // Get the current date
+        Date currentDate = new Date();
+
+        // Create a SimpleDateFormat instance with the desired format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        // Format the current date
+        String formattedDate = dateFormat.format(currentDate);
+
+        // Set the formatted date to the TextView
+        txtDateOfBirth.setText(formattedDate);
     }
 
     private void showDatePickerDialog() {
@@ -125,6 +143,7 @@ public class UserInformation extends AppCompatActivity {
     }
 
     public void saveUserInformation(int userId, UserInformationDataModel userInformationDataModel){
+        String address=userInformationDataModel.getAddress1()+"#"+userInformationDataModel.getState()+"#"+userInformationDataModel.getDistrict();
         RequestQueue queue= Volley.newRequestQueue(UserInformation.this);
         JSONObject jsonObject=new JSONObject();
         try{
@@ -132,13 +151,13 @@ public class UserInformation extends AppCompatActivity {
             jsonObject.put("email", userInformationDataModel.getEmail());
             jsonObject.put("firstName", userInformationDataModel.getFirstName());
             jsonObject.put("lastName", userInformationDataModel.getLastName());
-            jsonObject.put("gender", "MALE");
-            jsonObject.put("address", userInformationDataModel.getAddress1());
+            jsonObject.put("gender", userInformationDataModel.getGender());
+            jsonObject.put("address", address);
             jsonObject.put("dob", userInformationDataModel.getDateOfBirth());
-            jsonObject.put("designation",null);
+            jsonObject.put("designation","User");
             Log.d("saveUserInformation", "Request JSON: " + jsonObject.toString());
         }catch (JSONException jsonException){
-
+            Log.d("exception","error : "+jsonException.toString());
         }
         JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, API.SAVE_USER_INFORMATION_API, jsonObject, new Response.Listener<JSONObject>() {
             @Override

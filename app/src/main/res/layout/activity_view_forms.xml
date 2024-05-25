@@ -5,44 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ViewForms">
-    <!-- Horizontal layout for components -->
-    <!-- Horizontal layout for components -->
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/lightBlue"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="View All Form"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:id="@+id/layoutContainer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_below="@id/toolBar">
 
-        <!-- First TextView -->
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutSort"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Ascending"
-            android:textColor="@color/black"
-            android:paddingStart="3dp"
-            android:textSize="18sp"/>
+            android:layout_weight="1"
+            android:hint="Sort"
+            android:layout_margin="3dp"
+            android:visibility="visible"
+            app:boxStrokeColor="#00BDE8">
 
-        <!-- Second TextView -->
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           android:paddingStart="3dp"
-            android:textColor="@color/black"
-            android:text="Descending"
-            android:textSize="18sp"/>
+            <AutoCompleteTextView
+                android:id="@+id/spinnerSort"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none" />
 
-        <!-- Spinner -->
-        <!-- TextInputLayout for Loan Type -->
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutNumberOfPage"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="120dp"
-            android:paddingStart="3dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="Page No"
+            android:layout_margin="3dp"
             android:visibility="visible"
             app:boxStrokeColor="#00BDE8">
 
@@ -59,9 +76,10 @@
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
             android:backgroundTint="@color/lightBlue"
-            android:text="Next"/>
+            android:text="Next" />
     </LinearLayout>
 
 
@@ -69,9 +87,9 @@
 
     <!-- Other content of your activity -->
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/layoutContainer1"
         android:id="@+id/recyclerViewForm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutContainer1" />
 
 </RelativeLayout>

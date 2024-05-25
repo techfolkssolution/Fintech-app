@@ -58,6 +58,8 @@ public class EditProfile extends AppCompatActivity {
                 String fullName=editTextName.getText().toString().trim();
                 String mobileNumber=editTextMobileNumber.getText().toString().trim();
                 String address=editTextAddress1.getText().toString().trim();
+                String state=editTextAddress2.getText().toString().trim();
+                String district=editTextAddress3.getText().toString().trim();
                 String email=editTextEmail.getText().toString().trim();
                 String[] name=fullName.split(" ");
                 userInformationDataModel.setFirstName(name[0]);
@@ -65,7 +67,10 @@ public class EditProfile extends AppCompatActivity {
                 userInformationDataModel.setMobileNumber(mobileNumber);
                 userInformationDataModel.setEmail(email);
                 userInformationDataModel.setAddress1(address);
-                fetchData("8780260413", userInformationDataModel);
+                userInformationDataModel.setAddress1(address);
+                userInformationDataModel.setState(state);
+                userInformationDataModel.setDistrict(district);
+                fetchData(mobileNumber, userInformationDataModel);
             }
         });
 
@@ -81,10 +86,13 @@ public class EditProfile extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject userDetailsObj = response.getJSONObject("userDetails");
+                            String[] address=userDetailsObj.getString("address").split("#");
                             editTextName.setText(userDetailsObj.getString("firstName")+" "+userDetailsObj.getString("lastName"));
                             editTextEmail.setText(userDetailsObj.getString("email"));
                             editTextMobileNumber.setText(response.getString("phoneNumber"));
-                            editTextAddress1.setText(userDetailsObj.getString("address"));
+                            editTextAddress1.setText(address[0]);
+                            editTextAddress2.setText(address[1]);
+                            editTextAddress3.setText(address[2]);
                         }catch (JSONException jsonException){
 
                         }
@@ -116,7 +124,7 @@ public class EditProfile extends AppCompatActivity {
                             userDetails.put("firstName", userInformationDataModel.getFirstName());
                             userDetails.put("lastName", userInformationDataModel.getLastName());
                             userDetails.put("email", userInformationDataModel.getEmail());
-                            userDetails.put("address", userInformationDataModel.getAddress1());
+                            userDetails.put("address", userInformationDataModel.getAddress1()+"#"+userInformationDataModel.getState()+"#"+userInformationDataModel.getDistrict());
 
 
                             // Create the new body for PUT request
@@ -162,6 +170,7 @@ public class EditProfile extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        Log.d("errorAPI","Error : "+error.toString());
                         Toast.makeText(EditProfile.this, "Failed to update record", Toast.LENGTH_SHORT).show();
                     }
                 }
