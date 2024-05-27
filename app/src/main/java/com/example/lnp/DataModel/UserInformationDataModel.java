@@ -1,10 +1,17 @@
 package com.example.lnp.DataModel;
 
 public class UserInformationDataModel {
-    private String firstName,lastName,email,MobileNumber,address1, state, district,dateOfBirth,gender;
+    private String firstName,lastName,email,MobileNumber,address1, state, district,dateOfBirth,gender,designation;
 
     public UserInformationDataModel(){}
 
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
 
     public String getGender() {
         return gender;

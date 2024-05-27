@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -112,25 +113,29 @@ public class ViewForms extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                     pageCounter++;
-                    getServiceRecords(new ServiceRecordsCallback() {
-                        @Override
-                        public void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList) {
-                            FormAdapter formAdapter = new FormAdapter(ViewForms.this, utilityServiceModelArrayList);
-                            LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                            recyclerViewForm.setLayoutManager(manager);
-                            recyclerViewForm.setAdapter(formAdapter);
-                        }
+                    if(pageCounter<totalPage) {
+                        getServiceRecords(new ServiceRecordsCallback() {
+                            @Override
+                            public void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList) {
+                                FormAdapter formAdapter = new FormAdapter(ViewForms.this, utilityServiceModelArrayList);
+                                LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                                recyclerViewForm.setLayoutManager(manager);
+                                recyclerViewForm.setAdapter(formAdapter);
+                            }
 
-                        @Override
-                        public void onError(String error) {
+                            @Override
+                            public void onError(String error) {
 
-                        }
+                            }
 
-                        @Override
-                        public void pageCounter(int pageNumber) {
+                            @Override
+                            public void pageCounter(int pageNumber) {
 
-                        }
-                    }, String.valueOf(pageCounter));
+                            }
+                        }, String.valueOf(pageCounter));
+                    }else{
+                        Toast.makeText(ViewForms.this, "There Is No More Page", Toast.LENGTH_SHORT).show();
+                    }
                 }
         });
 

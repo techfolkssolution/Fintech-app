@@ -21,6 +21,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
+import com.example.lnp.activity.Admin;
 import com.example.lnp.activity.EditProfile;
 import com.example.lnp.activity.RequestService;
 import com.example.lnp.activity.RetailerDocumentVerification;
@@ -113,7 +114,11 @@ public class Home extends Fragment implements OnItemClick{
             Intent intent=new Intent(getActivity(), ViewForms.class);
             intent.putExtra("serviceName",serviceName);
             startActivity(intent);
-        }else{
+        } else if (serviceName.equals("Admin")) {
+            Intent intent=new Intent(getActivity(), Admin.class);
+            intent.putExtra("serviceName",serviceName);
+            startActivity(intent);
+        } else{
             if (isRetailer || isServiceAccessibleByAll(serviceName)) {
                 Intent i = new Intent(getActivity(), RequestService.class);
                 i.putExtra("serviceName", serviceName);

@@ -39,6 +39,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/layoutImageConatiner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -55,6 +56,7 @@
                     app:cardElevation="20dp">
 
                     <ImageView
+                        android:id="@+id/imageViewAadharCard"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:src="@drawable/click"
@@ -67,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cardViewConatiner1"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="40dp"
                     android:background="@color/lightBlue"
                     android:text="Upload Aadhar Card"
@@ -79,6 +81,7 @@
 
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/layoutImageConatiner2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -95,6 +98,7 @@
                     app:cardElevation="20dp">
 
                     <ImageView
+                        android:id="@+id/imageViewPanCard"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:src="@drawable/click"
@@ -107,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cardViewConatiner2"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="40dp"
 
                     android:background="@color/lightBlue"
