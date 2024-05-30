@@ -79,12 +79,13 @@ public class ViewForms extends AppCompatActivity {
                 totalPage=pageNumber;
                 setUpPageNumberSpinner(pageNumber);
             }
-        }, "0");
+        }, "0","Ascending");
 
 
         spinnerPageNumber.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String sortBy = spinnerSort.getText().toString();
                 int pageNumber= Integer.parseInt(spinnerPageNumber.getText().toString());
                 pageNumber--;
                 getServiceRecords(new ServiceRecordsCallback() {
@@ -105,13 +106,14 @@ public class ViewForms extends AppCompatActivity {
                     public void onError(String error) {
 
                     }
-                },String.valueOf(pageNumber));
+                },String.valueOf(pageNumber),sortBy);
             }
         });
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String sortBy = spinnerSort.getText().toString();
                     pageCounter++;
                     if(pageCounter<totalPage) {
                         getServiceRecords(new ServiceRecordsCallback() {
@@ -132,11 +134,38 @@ public class ViewForms extends AppCompatActivity {
                             public void pageCounter(int pageNumber) {
 
                             }
-                        }, String.valueOf(pageCounter));
+                        }, String.valueOf(pageCounter),sortBy);
                     }else{
                         Toast.makeText(ViewForms.this, "There Is No More Page", Toast.LENGTH_SHORT).show();
                     }
                 }
+        });
+
+        spinnerSort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String sortBy = sorting[i];
+               getServiceRecords(new ServiceRecordsCallback() {
+                   @Override
+                   public void onSuccess(ArrayList<UtilityServiceModel> utilityServiceModelArrayList) {
+                       FormAdapter formAdapter = new FormAdapter(ViewForms.this, utilityServiceModelArrayList);
+                       LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                       recyclerViewForm.setLayoutManager(manager);
+                       recyclerViewForm.setAdapter(formAdapter);
+                   }
+
+                   @Override
+                   public void pageCounter(int pageNumber) {
+
+                   }
+
+                   @Override
+                   public void onError(String error) {
+
+                   }
+               },"0",sortBy);
+            }
         });
 
 
@@ -154,12 +183,18 @@ public class ViewForms extends AppCompatActivity {
     }
 
 
-    public void getServiceRecords(final ServiceRecordsCallback callback, String pageNumber) {
+    public void getServiceRecords(final ServiceRecordsCallback callback, String pageNumber,String sortBy) {
+        String apiUrl ="";
         ArrayList<UtilityServiceModel> utilityServiceModelArrayList = new ArrayList<>();
         // Initialize Volley RequestQueue
         RequestQueue queue = Volley.newRequestQueue(this);
-        String apiUrl = "http://192.168.1.3:8080/rest/service/get/" + pageNumber + "/10/id";
-
+        if(sortBy.equals("Ascending")){
+           apiUrl= "http://"+API.IP_ADDRESS+":8080/rest/service/get/" + pageNumber + "/10/id";
+        } else if (sortBy.equals("Descending")) {
+            apiUrl="http://"+API.IP_ADDRESS+":8080/rest/service/get/desc/" + pageNumber + "/10/id";
+        }else{
+            apiUrl= "http://"+API.IP_ADDRESS+":8080/rest/service/get/" + pageNumber + "/10/id";
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, apiUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

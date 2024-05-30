@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.VerificationRequest"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AllUserInformation"
+            android:exported="false" />
+        <activity
             android:name=".activity.Admin"
             android:exported="false" />
         <activity
