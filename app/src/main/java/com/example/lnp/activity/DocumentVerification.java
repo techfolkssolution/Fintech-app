@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lnp.R;
 
-public class VerificationRequest extends AppCompatActivity {
+public class DocumentVerification extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

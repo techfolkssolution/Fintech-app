@@ -12,7 +12,7 @@ import com.example.lnp.R;
 
 
 public class Admin extends AppCompatActivity {
-    private  CardView cardViewAllUserInformation;
+    private  CardView cardViewAllUserInformation,cardViewVerificationRequest;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -21,11 +21,21 @@ public class Admin extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         cardViewAllUserInformation=findViewById(R.id.cardViewAllUserInformation);
+        cardViewVerificationRequest=findViewById(R.id.cardViewVerificationRequest);
 
         cardViewAllUserInformation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(Admin.this,AllUserInformation.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        cardViewVerificationRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(Admin.this,VerificationRequest.class);
                 startActivity(i);
                 finish();
             }

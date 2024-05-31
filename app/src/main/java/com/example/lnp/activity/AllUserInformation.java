@@ -87,11 +87,12 @@ public class AllUserInformation extends AppCompatActivity {
             public void onError(String error) {
 
             }
-        }, "0");
+        }, "0","Ascending");
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String sortBy = spinnerSort.getText().toString();
                 pageCounter++;
                 Log.d("pageCounter", "Curent Page :" + pageCounter + "\nTotal Page : " + totalPage);
                 if (pageCounter < totalPage) {
@@ -114,7 +115,7 @@ public class AllUserInformation extends AppCompatActivity {
                         public void onError(String error) {
 
                         }
-                    }, String.valueOf(pageCounter));
+                    }, String.valueOf(pageCounter),sortBy);
                 } else {
                     Toast.makeText(AllUserInformation.this, "There Is No More Page", Toast.LENGTH_SHORT).show();
                 }
@@ -124,6 +125,7 @@ public class AllUserInformation extends AppCompatActivity {
         spinnerPageNumber.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String sortBy = spinnerSort.getText().toString();
                 int pageNumber = Integer.parseInt(spinnerPageNumber.getText().toString());
                 pageNumber--;
                 getUserRecords(new UserRecordsCallback() {
@@ -144,7 +146,7 @@ public class AllUserInformation extends AppCompatActivity {
                     public void onError(String error) {
 
                     }
-                }, String.valueOf(pageNumber));
+                }, String.valueOf(pageNumber),sortBy);
             }
         });
 
@@ -157,6 +159,7 @@ public class AllUserInformation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString();
+                String sortBy = spinnerSort.getText().toString();
                 if (query.length() == 0) {
                     getUserRecords(new UserRecordsCallback() {
                         @Override
@@ -177,7 +180,7 @@ public class AllUserInformation extends AppCompatActivity {
                         public void onError(String error) {
 
                         }
-                    }, "0");
+                    }, "0",sortBy);
                 } else {
                     searchUser(new UserRecordsCallback() {
                         @Override
@@ -207,17 +210,52 @@ public class AllUserInformation extends AppCompatActivity {
             }
         });
 
+        spinnerSort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String sortBy = sorting[i];
+
+                getUserRecords(new UserRecordsCallback() {
+                    @Override
+                    public void onSuccess(ArrayList<UserInformationDataModel> userInformationDataModelArrayList) {
+                        AllUserAdapter userAdapter = new AllUserAdapter(AllUserInformation.this, userInformationDataModelArrayList);
+                        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                        recyclerViewAllUser.setLayoutManager(manager);
+                        recyclerViewAllUser.setAdapter(userAdapter);
+                    }
+
+                    @Override
+                    public void pageCounter(int pageNumber) {
+                       
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                }, "0",sortBy);
+            }
+        });
+
     }
 
-    public void getUserRecords(final UserRecordsCallback callback, String pageNumber) {
+    public void getUserRecords(final UserRecordsCallback callback, String pageNumber,String sortBy) {
+        String apiUrl="";
 
 
         ArrayList<UserInformationDataModel> userInformationDataModelArrayList = new ArrayList<>();
 
         // Initialize Volley RequestQueue
         RequestQueue queue = Volley.newRequestQueue(this);
+        if(sortBy.equals("Ascending")){
+            apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/users/" + pageNumber + "/10/id";
+        } else if (sortBy.equals("Descending")) {
+            apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/users/desc/" + pageNumber + "/10/id";
+        }else{
+            apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/users/" + pageNumber + "/10/id";
+        }
 
-        String apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/users/" + pageNumber + "/10/id";
+
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
