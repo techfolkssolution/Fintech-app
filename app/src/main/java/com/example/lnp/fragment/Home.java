@@ -2,6 +2,7 @@ package com.example.lnp.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +33,13 @@ import com.example.lnp.adapter.ServicesAdapter;
 import java.util.ArrayList;
 
 
-public class Home extends Fragment implements OnItemClick{
+public class Home extends Fragment implements OnItemClick {
     private ImageSlider imageSlider;
     private String[] servicesName = {
-            "Loans", "CA", "Engineer", "CIBIL", "Savings","View Forms","Admin"
+            "Loans", "CA", "Engineer", "CIBIL", "Savings", "View Forms", "Admin"
     };
     private int[] servicesIcon = {
-            R.drawable.bank, R.drawable.accountant, R.drawable.engineers, R.drawable.cibil, R.drawable.piggybank,R.drawable.form,R.drawable.admin
+            R.drawable.bank, R.drawable.accountant, R.drawable.engineers, R.drawable.cibil, R.drawable.piggybank, R.drawable.form, R.drawable.admin
     };
 
     private String[] billsAndUtilityServiceName = {
@@ -53,6 +55,7 @@ public class Home extends Fragment implements OnItemClick{
     private RecyclerView recyclerViewQuery, recyclerViewBills;
     private ServicesAdapter queryAdapter, billAdapter;
     private TextView textViewRetailer;
+    private ImageView imageViewGmail, imageViewPhone,imageViewWhatsapp;
 
     public Home() {
         // Required empty public constructor
@@ -68,7 +71,10 @@ public class Home extends Fragment implements OnItemClick{
         imageSlider = view.findViewById(R.id.imageSlider);
         recyclerViewQuery = view.findViewById(R.id.recyclerViewServices);
         recyclerViewBills = view.findViewById(R.id.recyclerViewBills);
-        textViewRetailer=view.findViewById(R.id.textViewRetailer);
+        textViewRetailer = view.findViewById(R.id.textViewRetailer);
+        imageViewGmail = view.findViewById(R.id.imageViewGmail);
+        imageViewPhone = view.findViewById(R.id.imageViewPhone);
+        imageViewWhatsapp=view.findViewById(R.id.imageViewWhatsapp);
 
 
         //Display Images in slider.
@@ -83,8 +89,33 @@ public class Home extends Fragment implements OnItemClick{
         textViewRetailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(getActivity(), RetailerDocumentVerification.class);
+                Intent i = new Intent(getActivity(), RetailerDocumentVerification.class);
                 startActivity(i);
+
+            }
+        });
+
+        imageViewGmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:xyz@gmail.com")); // only email apps should handle this
+                startActivity(intent);
+            }
+        });
+        imageViewPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumber = "tel:1234567890";
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse(phoneNumber));
+                startActivity(intent);
+            }
+        });
+
+        imageViewWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
@@ -94,14 +125,14 @@ public class Home extends Fragment implements OnItemClick{
     }
 
     public void displayAssistanceQueryItem() {
-        queryAdapter = new ServicesAdapter(getActivity(), servicesName, servicesIcon,this);
+        queryAdapter = new ServicesAdapter(getActivity(), servicesName, servicesIcon, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewQuery.setLayoutManager(layoutManager);
         recyclerViewQuery.setAdapter(queryAdapter);
     }
 
     public void displayBillsAndUtilityItem() {
-        billAdapter = new ServicesAdapter(getActivity(), billsAndUtilityServiceName, billsAndUtilityServiceIcon,this);
+        billAdapter = new ServicesAdapter(getActivity(), billsAndUtilityServiceName, billsAndUtilityServiceIcon, this);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
         recyclerViewBills.setLayoutManager(layoutManager);
         recyclerViewBills.setAdapter(billAdapter);
@@ -109,16 +140,16 @@ public class Home extends Fragment implements OnItemClick{
 
     @Override
     public void onItemClickListener(String serviceName) {
-        boolean isRetailer=false;
-        if(serviceName.equals("View Forms")){
-            Intent intent=new Intent(getActivity(), ViewForms.class);
-            intent.putExtra("serviceName",serviceName);
+        boolean isRetailer = false;
+        if (serviceName.equals("View Forms")) {
+            Intent intent = new Intent(getActivity(), ViewForms.class);
+            intent.putExtra("serviceName", serviceName);
             startActivity(intent);
         } else if (serviceName.equals("Admin")) {
-            Intent intent=new Intent(getActivity(), Admin.class);
-            intent.putExtra("serviceName",serviceName);
+            Intent intent = new Intent(getActivity(), Admin.class);
+            intent.putExtra("serviceName", serviceName);
             startActivity(intent);
-        } else{
+        } else {
             if (isRetailer || isServiceAccessibleByAll(serviceName)) {
                 Intent i = new Intent(getActivity(), RequestService.class);
                 i.putExtra("serviceName", serviceName);

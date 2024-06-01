@@ -24,4 +24,11 @@ public class API {
 
     //This API is used to Save UserInformation
     public static  final  String SAVE_USER_INFORMATION_API="http://"+IP_ADDRESS+":8080/rest/user/userdetails";
+
+    //This API is used for Upload Documents Such As Aadhar Card And Pan Card.
+    public static final String UPLOAD_IMPORTANT_DOC="http://"+IP_ADDRESS+":8080/rest/user/upload";
+
+    //http://localhost:8080/rest/adminaccess/findAll
+
+    public static final String API_CONTACT="http://"+IP_ADDRESS+":8080/rest/adminaccess/findAll";
 }

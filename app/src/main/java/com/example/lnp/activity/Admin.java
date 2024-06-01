@@ -1,6 +1,7 @@
 package com.example.lnp.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,7 +13,7 @@ import com.example.lnp.R;
 
 
 public class Admin extends AppCompatActivity {
-    private  CardView cardViewAllUserInformation,cardViewVerificationRequest;
+    private  CardView cardViewAllUserInformation,cardViewVerificationRequest,cardViewCustomerSupport;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -22,6 +23,7 @@ public class Admin extends AppCompatActivity {
 
         cardViewAllUserInformation=findViewById(R.id.cardViewAllUserInformation);
         cardViewVerificationRequest=findViewById(R.id.cardViewVerificationRequest);
+        cardViewCustomerSupport=findViewById(R.id.cardViewCustomerSupport);
 
         cardViewAllUserInformation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +43,22 @@ public class Admin extends AppCompatActivity {
             }
         });
 
+        cardViewCustomerSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayDialog();
+            }
+        });
+
 
     }
 
+    public void displayDialog(){
+        Dialog dialog=new Dialog(Admin.this);
+        dialog.setContentView(R.layout.customer_support_dialog);
+
+
+        dialog.show();
+    }
 
 }

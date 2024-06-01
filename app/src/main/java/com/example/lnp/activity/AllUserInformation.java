@@ -306,7 +306,9 @@ public class AllUserInformation extends AppCompatActivity {
         // Initialize Volley RequestQueue
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/users/" + query;
+        //http://localhost:8080/rest/user/getAllUsersByName/K
+
+        String apiUrl = "http://" + API.IP_ADDRESS + ":8080/rest/user/getAllUsersByName/" + query;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, apiUrl, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
