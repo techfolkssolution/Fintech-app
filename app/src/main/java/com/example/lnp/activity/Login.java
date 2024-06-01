@@ -107,6 +107,7 @@ public class Login extends AppCompatActivity {
                 if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
                     Toast.makeText(Login.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }
+                Log.d("error","error :"+error.toString());
             }
         });
         requestQueue.add(jsonObjectRequest);

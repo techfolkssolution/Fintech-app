@@ -28,7 +28,15 @@ public class API {
     //This API is used for Upload Documents Such As Aadhar Card And Pan Card.
     public static final String UPLOAD_IMPORTANT_DOC="http://"+IP_ADDRESS+":8080/rest/user/upload";
 
-    //http://localhost:8080/rest/adminaccess/findAll
+
+    //This API is Used For Get Contact Support Data
 
     public static final String API_CONTACT="http://"+IP_ADDRESS+":8080/rest/adminaccess/findAll";
+
+    //This API is used for update the contact support data.
+
+    public static final String API_CONTACT_UPDATE="http://"+IP_ADDRESS+":8080/rest/adminaccess/update?key=";
+    //This API is used to get Pending Verification Request from database
+
+    public static final String API_PENDING_VERIFICATION_REQUEST="http://"+IP_ADDRESS+":8080/rest/adminaccess/getpendingverificationuser";
 }

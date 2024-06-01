@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.lnp.API.API;
+import com.example.lnp.DataModel.AdminAccessInformation;
 import com.example.lnp.Interface.OnItemClick;
 import com.example.lnp.R;
 import com.example.lnp.activity.Admin;
@@ -30,11 +39,16 @@ import com.example.lnp.activity.RetailerDocumentVerification;
 import com.example.lnp.activity.ViewForms;
 import com.example.lnp.adapter.ServicesAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 
 public class Home extends Fragment implements OnItemClick {
     private ImageSlider imageSlider;
+    String phoneNumber = "";
     private String[] servicesName = {
             "Loans", "CA", "Engineer", "CIBIL", "Savings", "View Forms", "Admin"
     };
@@ -55,7 +69,7 @@ public class Home extends Fragment implements OnItemClick {
     private RecyclerView recyclerViewQuery, recyclerViewBills;
     private ServicesAdapter queryAdapter, billAdapter;
     private TextView textViewRetailer;
-    private ImageView imageViewGmail, imageViewPhone,imageViewWhatsapp;
+    private ImageView imageViewGmail, imageViewPhone, imageViewWhatsapp;
 
     public Home() {
         // Required empty public constructor
@@ -74,7 +88,7 @@ public class Home extends Fragment implements OnItemClick {
         textViewRetailer = view.findViewById(R.id.textViewRetailer);
         imageViewGmail = view.findViewById(R.id.imageViewGmail);
         imageViewPhone = view.findViewById(R.id.imageViewPhone);
-        imageViewWhatsapp=view.findViewById(R.id.imageViewWhatsapp);
+        imageViewWhatsapp = view.findViewById(R.id.imageViewWhatsapp);
 
 
         //Display Images in slider.
@@ -98,30 +112,85 @@ public class Home extends Fragment implements OnItemClick {
         imageViewGmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:xyz@gmail.com")); // only email apps should handle this
-                startActivity(intent);
+               getCustomerServiceData("gmail", new CallBack() {
+                   @Override
+                   public void onSuccess(String data) {
+                       Intent intent = new Intent(Intent.ACTION_SENDTO);
+                       intent.setData(Uri.parse("mailto:"+data)); // only email apps should handle this
+                       startActivity(intent);
+                   }
+               });
             }
         });
         imageViewPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumber = "tel:1234567890";
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse(phoneNumber));
-                startActivity(intent);
+
+                getCustomerServiceData("phone", new CallBack() {
+                    @Override
+                    public void onSuccess(String data) {
+                     phoneNumber="tel:+91"+data;
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse(phoneNumber));
+                        startActivity(intent);
+                    }
+                });
+
+
             }
         });
 
         imageViewWhatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getCustomerServiceData("whatsapp", new CallBack() {
+                    @Override
+                    public void onSuccess(String data) {
+                        String url="https://wa.me/+91"+data+"?text=Hi";
+                        Intent intent=new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
 
         return view;
+    }
+
+    public void getCustomerServiceData(String customerServiceType,CallBack callBack) {
+        RequestQueue queue= Volley.newRequestQueue(getActivity());
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, API.API_CONTACT, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for(int i=0;i<response.length();i++){
+                    try{
+                        JSONObject data=response.getJSONObject(i);
+                        String value=data.getString("adminAccessInformationValue");
+                        String key=data.getString("adminAccessInformationKey");
+                        if(key.equals(customerServiceType)){
+                            callBack.onSuccess(value);
+                            break;
+                        }
+
+                    }catch (JSONException jsonException){
+
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+    }
+    public interface CallBack{
+        public void onSuccess(String data);
     }
 
     public void displayAssistanceQueryItem() {
