@@ -154,7 +154,7 @@ public class UserInformation extends AppCompatActivity {
             jsonObject.put("gender", userInformationDataModel.getGender());
             jsonObject.put("address", address);
             jsonObject.put("dob", userInformationDataModel.getDateOfBirth());
-            jsonObject.put("designation","User");
+            jsonObject.put("designation",0);
             Log.d("saveUserInformation", "Request JSON: " + jsonObject.toString());
         }catch (JSONException jsonException){
             Log.d("exception","error : "+jsonException.toString());
@@ -163,6 +163,7 @@ public class UserInformation extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 sharedPreferences.edit().putBoolean("userInfo",true).apply();
+                sharedPreferences.edit().putInt("userRole",0).apply();
                 startActivity(new Intent(getApplicationContext(),Login.class));
                 finish();
                 Toast.makeText(UserInformation.this, "User Information Data Saved", Toast.LENGTH_SHORT).show();

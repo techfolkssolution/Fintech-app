@@ -1,7 +1,9 @@
 package com.example.lnp.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -70,6 +72,7 @@ public class Home extends Fragment implements OnItemClick {
     private ServicesAdapter queryAdapter, billAdapter;
     private TextView textViewRetailer;
     private ImageView imageViewGmail, imageViewPhone, imageViewWhatsapp;
+    private SharedPreferences sharedPreferences;
 
     public Home() {
         // Required empty public constructor
@@ -97,6 +100,14 @@ public class Home extends Fragment implements OnItemClick {
         slideModels.add(new SlideModel(R.drawable.logo, ScaleTypes.FIT));
         slideModels.add(new SlideModel(R.drawable.logo, ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+
+        sharedPreferences= requireContext().getSharedPreferences("userInformation", Context.MODE_PRIVATE);
+        int userRole=sharedPreferences.getInt("userRole",100);
+        if(userRole==0){
+            textViewRetailer.setVisibility(View.VISIBLE);
+        }else{
+            textViewRetailer.setVisibility(View.GONE);
+        }
 
         displayAssistanceQueryItem();
         displayBillsAndUtilityItem();

@@ -97,6 +97,8 @@ public class SignUp extends AppCompatActivity {
                 if (error.networkResponse != null && error.networkResponse.statusCode == 400) {
                     editTextMobileNumber.requestFocus();
                     editTextMobileNumber.setError("This Phone Number Already Exists");
+                }else{
+                    Log.d("volleyError",error.toString());
                 }
             }
         });

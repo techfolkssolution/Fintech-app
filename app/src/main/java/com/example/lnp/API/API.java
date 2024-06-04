@@ -2,7 +2,7 @@ package com.example.lnp.API;
 
 public class API {
 
-    public static final String IP_ADDRESS="192.168.1.6";
+    public static final String IP_ADDRESS="192.168.233.131";
 
 
     //This API is Used For Login User
