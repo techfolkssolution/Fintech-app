@@ -3,6 +3,7 @@ package com.example.lnp.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -33,12 +34,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Admin extends AppCompatActivity {
     private ArrayList<AdminAccessInformation> adminAccessInformation;
-    private CardView cardViewAllUserInformation, cardViewVerificationRequest, cardViewCustomerSupport;
+    private CardView cardViewAllUserInformation, cardViewVerificationRequest, cardViewCustomerSupport, cardViewAddCustomerSupport;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,6 +56,7 @@ public class Admin extends AppCompatActivity {
         cardViewAllUserInformation = findViewById(R.id.cardViewAllUserInformation);
         cardViewVerificationRequest = findViewById(R.id.cardViewVerificationRequest);
         cardViewCustomerSupport = findViewById(R.id.cardViewCustomerSupport);
+        cardViewAddCustomerSupport = findViewById(R.id.cardViewAddCustomerSupport);
 
         cardViewAllUserInformation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,14 +88,20 @@ public class Admin extends AppCompatActivity {
         cardViewCustomerSupport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayDialog(adminAccessInformation);
+                displayUpdateContactSupportDialog(adminAccessInformation);
+            }
+        });
+        cardViewAddCustomerSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayAddContactSupportDialog();
             }
         });
 
 
     }
 
-    public void displayDialog(ArrayList<AdminAccessInformation> adminAccessInformationsArrayList) {
+    public void displayUpdateContactSupportDialog(ArrayList<AdminAccessInformation> adminAccessInformationsArrayList) {
         Dialog dialog = new Dialog(Admin.this);
         dialog.setContentView(R.layout.customer_support_dialog);
 
@@ -111,18 +125,59 @@ public class Admin extends AppCompatActivity {
         });
 
 
-
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String key = spinnerCustomerServiceType.getText().toString();
-                String value=editText.getText().toString().trim();
-                updateData(key,value);
+                String value = editText.getText().toString().trim();
+                updateData(key, value);
             }
         });
 
 
         dialog.show();
+    }
+
+    public void displayAddContactSupportDialog() {
+        Dialog dialog = new Dialog(Admin.this);
+        dialog.setContentView(R.layout.add_customer_support_dialog);
+        EditText editTextKey = dialog.findViewById(R.id.editTextKey);
+        EditText editTextValue = dialog.findViewById(R.id.editTextValue);
+        AppCompatButton btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdminAccessInformation adminAccessInformation1 = new AdminAccessInformation();
+                adminAccessInformation1.setAdminAccessInformationKey(editTextKey.getText().toString().trim());
+                adminAccessInformation1.setAdminAccessInformationValue(editTextValue.getText().toString().trim());
+                saveContactSupportInformation(adminAccessInformation1);
+            }
+        });
+        dialog.show();
+    }
+
+    public void saveContactSupportInformation(AdminAccessInformation adminAccessInformation) {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("adminAccessInformationKey", adminAccessInformation.getAdminAccessInformationKey());
+            jsonObject.put("adminAccessInformationValue", adminAccessInformation.getAdminAccessInformationValue());
+        } catch (JSONException jsonException) {
+
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, API.API_SAVE_CONTACT_INFORMATION, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(Admin.this, "Data Is Uploaded", Toast.LENGTH_SHORT).show();
+                Log.d("APIContact", "Done");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("APIContact", error.toString());
+            }
+        });
+        queue.add(request);
     }
 
     public void getData(Callback callback) {
@@ -158,22 +213,67 @@ public class Admin extends AppCompatActivity {
     }
 
 
+
     public void updateData(String key, String value) {
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String apiUrl = API.API_CONTACT_UPDATE + key + "&value=" + value;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, apiUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        String apiUrl = API.API_CONTACT_UPDATE;
+        HashMap<String, String> params = new HashMap<>();
+        params.put("key", key);
+        params.put("value", value);
+        new HttpPutRequestTask().execute(apiUrl,params);
+    }
+
+    public class HttpPutRequestTask extends AsyncTask<Object, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(Object... objects) {
+            String urlString = (String) objects[0];
+            HashMap<String, String> params = (HashMap<String, String>) objects[1];
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.setDoOutput(true);
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(getPostDataString(params).getBytes());
+                os.flush();
+                os.close();
+
+                int responseCode = urlConnection.getResponseCode();
+                return responseCode == HttpURLConnection.HTTP_OK;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
                 Toast.makeText(Admin.this, "Data Updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Admin.this, "Error Updating Data", Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }
 
+        private String getPostDataString(HashMap<String, String> params) throws Exception {
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
             }
-        });
-        queue.add(jsonObjectRequest);
-
+            return result.toString();
+        }
     }
 
     public interface Callback {
